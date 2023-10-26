@@ -3,11 +3,13 @@ const std = @import("std");
 pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
+    const single_threaded = b.option(bool, "single_threaded", "Build single threaded") orelse false;
 
     const lib = b.addStaticLibrary(.{
         .name = "z",
         .target = target,
         .optimize = optimize,
+        .single_threaded = single_threaded,
     });
     lib.linkLibC();
     lib.addCSourceFiles(srcs, &.{"-std=c89"});
